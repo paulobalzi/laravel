@@ -32,16 +32,16 @@ SCRIPT
 
 $php = <<SCRIPT
 echo -e '\033[33m INSTALANDO PHP \033[m'
-sudo apt install php7.1 -y
-sudo apt install php7.1-cli -y
-sudo apt install php7.1-common -y
-sudo apt install php7.1-curl -y
-sudo apt install php7.1-mbstring  -y
-sudo apt install php7.1-mysql -y
-sudo apt install php7.1-xml -y
-sudo apt install php7.1-pgsql -y
-sudo apt install php7.1-json -y
-sudo apt install php7.1-zip -y
+sudo apt install php7.2 -y
+sudo apt install php7.2-cli -y
+sudo apt install php7.2-common -y
+sudo apt install php7.2-curl -y
+sudo apt install php7.2-mbstring  -y
+sudo apt install php7.2-mysql -y
+sudo apt install php7.2-xml -y
+sudo apt install php7.2-pgsql -y
+sudo apt install php7.2-json -y
+sudo apt install php7.2-zip -y
 echo -e '\033[34m PROCESSO FINALIZADO \033[m'
 SCRIPT
 
@@ -78,16 +78,16 @@ echo -e '\033[34m PROCESSO FINALIZADO \033[m'
 SCRIPT
 
 Vagrant.configure("2") do |config|
-    config.vm.define "laravel"
+    config.vm.define "laravel-udemy"
     config.vm.box = "generic/debian9"
-    config.vm.host_name = "laravel"
+    config.vm.host_name = "laravel-udemy"
     config.vm.network :private_network, ip: "192.168.1.200"
     config.vm.post_up_message
 
-    config.vm.synced_folder "/home/paulobalzi/devel/estudo/laravel/code", "/home/vagrant/devel"
+    config.vm.synced_folder "/home/paulobalzi/devel/udemy/laravel/code", "/home/vagrant/devel"
 
     config.vm.provider "virtualbox" do |vb|
-        vb.name = "laravel"
+        vb.name = "laravel-udemy"
         vb.gui = false
         vb.memory = 1024
         vb.cpus = 1
