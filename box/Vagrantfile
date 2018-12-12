@@ -42,6 +42,30 @@ sudo apt install php7.2-xml -y
 sudo apt install php7.2-pgsql -y
 sudo apt install php7.2-json -y
 sudo apt install php7.2-zip -y
+sudo apt install php7.2-xml -y
+sudo apt install php7.2-opcache -y
+sudo apt install php7.2-fpm -y
+echo -e '\033[34m PROCESSO FINALIZADO \033[m'
+SCRIPT
+
+$mysql = <<SCRIPT
+echo -e '\033[33m INSTALANDO MYSQL \033[m'
+sudo echo -e "deb http://repo.mysql.com/apt/debian/ stretch mysql-5.7" > /etc/apt/sources.list.d/mysql.list
+sudo echo -e "deb-src http://repo.mysql.com/apt/debian/ stretch mysql-5.7" >> /etc/apt/sources.list.d/mysql.list
+sudo wget -O /tmp/RPM-GPG-KEY-mysql https://repo.mysql.com/RPM-GPG-KEY-mysql --no-check-certificate
+sudo apt-key add /tmp/RPM-GPG-KEY-mysql
+sudo apt-get update
+# debconf-set-selections <<< 'mysql-server mysql-server/root_password password toor'
+# debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password toor'
+# sudo apt-get install mysql-server -y
+echo -e '\033[34m PROCESSO FINALIZADO \033[m'
+SCRIPT
+
+$apache = <<SCRIPT
+echo -e '\033[33m INSTALANDO APACHE2 \033[m'
+sudo apt-get install apache2 -y
+sudo apt install libapache2-mod-php7.2 -y
+sudo a2enmod php7.2
 echo -e '\033[34m PROCESSO FINALIZADO \033[m'
 SCRIPT
 
@@ -84,18 +108,21 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: "192.168.1.200"
     config.vm.post_up_message
 
-    config.vm.synced_folder "/home/paulobalzi/devel/udemy/laravel/code", "/home/vagrant/devel"
+    # config.vm.synced_folder "/home/paulobalzi/devel/udemy/laravel/code", "/home/vagrant/devel"
 
     config.vm.provider "virtualbox" do |vb|
         vb.name = "laravel-udemy"
         vb.gui = false
         vb.memory = 1024
         vb.cpus = 1
+        vb.default_nic_type = "82543GC"
     end
 
     config.vm.provision "apt", keep_color: false,  type: "shell", preserve_order: true, inline: $apt
+    config.vm.provision "mysql", keep_color: false,  type: "shell", preserve_order: true, inline: $mysql
     config.vm.provision "phpRepository", keep_color: false,  type: "shell", preserve_order: true, inline: $phpRepository
     config.vm.provision "php", keep_color: false,  type: "shell", preserve_order: true, inline: $php
+    config.vm.provision "apache", keep_color: false,  type: "shell", preserve_order: true, inline: $apache
     config.vm.provision "composer", keep_color: false,  type: "shell", preserve_order: true, inline: $composer
     config.vm.provision "laravelInstaller",
         keep_color: false,
