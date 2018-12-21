@@ -53,3 +53,9 @@ Inicialização do aplicação
     |   `-- views
     `-- logs
 ```
+# Rotas
+
+# Tips
+* tree -d -L 5 -I "vendor|tests"
+* composer create-project --prefer-dist laravel/laravel <nome-projeto>
+* php artisan serve --host=192.168.1.200
