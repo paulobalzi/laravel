@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/ola', function () {
+    return view('hello');
+});
+
 Route::get('/nome/{nome}/{sobrenome}', function($nome, $sn) {
     return "<h1>ola $nome $sn</h1>";
 });
@@ -38,3 +42,34 @@ Route::get('/nome-opcional/{nome?}', function($nome = null) {
     }
 });
 
+// agrupamento
+Route::prefix('app')->group(function() {
+    Route::get("/", function() {
+        return "Pagina principal do APP";
+    });
+    Route::get("profile", function() {
+        return "Pagina PROFILE";
+    });
+    Route::get("about", function() {
+        return "Pagina ABOUT";
+    });
+});
+
+// redirecionamento
+// 301 codigo HTTP (link removido)
+Route::redirect('/aqui', '/ola', 301);
+
+// Route::get('/hello', function () {
+//     return view('hello');
+// });
+// outra maneira de chamar uma view
+// (<rota>,<blade-file>)
+Route::view('/hello', 'hello');
+
+// passando parametros a partir da rota para uma view
+// Route::view('/hello2', 'hello_name', ['nome' => 'Balzi', 'sobrenome' => 'Paulo']);
+
+// passando parametros pela url para uma view
+Route::get('/hello2/{nome}/{sobrenome}', function($nome, $sobrenome) {
+    return view('hello_name', ['nome' => $nome, 'sobrenome' => $sobrenome]);
+});
