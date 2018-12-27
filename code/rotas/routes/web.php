@@ -96,3 +96,24 @@ Route::post('/rest/imprimir', function(Request $req){
     $nome = $req->nome;
     return "Hello (POST) | nome={$nome}";
 });
+
+// pegar todos os verbos http
+// Route::any('/rest/hello2', function() {...
+
+Route::match(['get', 'post'], '/rest/hello2', function() {
+    return 'Hello mundo 222';
+});
+
+// nomeando uma rota
+Route::get('/produtos', function() {
+   echo "Meus produtos" ;
+})->name('meusProdutos');
+
+Route::get('/linkprodutos', function() {
+    $url = route('meusProdutos');
+    echo "<a href=\"{$url}\">Meus Produtos linkado</a>";
+});
+
+Route::get('/redirecionar-produtos', function() {
+    return redirect()->route('meusProdutos');
+});
