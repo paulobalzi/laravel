@@ -1,5 +1,9 @@
 <?php
 
+// biblioteca para receber os dados via uma requisição
+// nesse exemplo foi usado o método post
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -85,4 +89,10 @@ Route::patch('/rest/hello', function(){
 
 Route::options('/rest/hello', function(){
     return 'Hello (OPTIONS)';
+});
+
+// utilizado o postman para passar os parametros
+Route::post('/rest/imprimir', function(Request $req){
+    $nome = $req->nome;
+    return "Hello (POST) | nome={$nome}";
 });
