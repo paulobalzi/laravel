@@ -18,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        return "Lista de todos os clientes";
     }
 
     /**
@@ -28,7 +28,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return "Formulario para cadastrar novo cliente";
     }
 
     /**
@@ -39,7 +39,10 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $s = 'Armazenar';
+        $s .= " Nome: " . $request->input('nome');
+        $s .= " e Idade: " . $request->input('idade');
+        return response($s, 201);
     }
 
     /**
@@ -50,7 +53,8 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
+        $v = ['paulo', 'henrique', 'balzi', 'gonçalves'];
+        return $v[$id];
     }
 
     /**
@@ -61,7 +65,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "Formulario para edição do usuário {$id}";
     }
 
     /**
@@ -70,10 +74,21 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     *
+     * nesse caso foi necessário colocar um atributo "_method" no data
+     * do formulario para indicar o método http que será executado
+     * _method=PUT ou _method=PATCH
+     * porque pela rota criada pelo resource, o laravel só entende esses dois métods
+     * http para o update do registro
+     *
+     * Enviando pelo method PUT os dados do formulário não são enviados
      */
     public function update(Request $request, $id)
     {
-        //
+        $s = "Atualizar o cliente {$id}";
+        $s .= " Nome: " . $request->input('nome');
+        $s .= " e Idade: " . $request->input('idade');
+        return response($s, 201);
     }
 
     /**
@@ -81,9 +96,11 @@ class ClientController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     *
+     * http method = delete
      */
     public function destroy($id)
     {
-        //
+        return response("Cliente apagado id = {$id}", 200);
     }
 }
