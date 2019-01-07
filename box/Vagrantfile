@@ -6,6 +6,7 @@ echo -e '\033[33m INSTALANDO PACOTES DEBIAN \033[m'
 sudo apt-get install htop -y
 sudo apt-get install unzip -y
 sudo apt-get install tree -y
+sudo apt-get install autoconf -y
 echo "-------------------------------------"
 echo "pacote: git..."
 sudo apt-get install git -y
@@ -91,6 +92,10 @@ echo -e '\033[34m PROCESSO FINALIZADO \033[m'
 exit $RESULT
 SCRIPT
 
+$nvm= <<SCRIPT
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+SCRIPT
+
 $laravelInstaller = <<SCRIPT
 echo -e '\033[33m INSTALANDO LARAVEL INSTALLER \033[m'
 composer global require laravel/installer
@@ -126,6 +131,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision "php", keep_color: false,  type: "shell", preserve_order: true, inline: $php
     config.vm.provision "apache", keep_color: false,  type: "shell", preserve_order: true, inline: $apache
     config.vm.provision "composer", keep_color: false,  type: "shell", preserve_order: true, inline: $composer
+    config.vm.provision "nvm", keep_color: false,  type: "shell", preserve_order: true, privileged: false, inline: $nvm
     config.vm.provision "laravelInstaller",
         keep_color: false,
         type: "shell",
@@ -141,5 +147,14 @@ end
 
 # > php artisan key:generate
 # > php -S 0.0.0.0:8000 -t public/
+#
+# BOOTSTRAP
+# na pasta do projeto
+# > npm install
+# gerar os arquivos js e css
+# > npm run dev
+# arquivos gerados
+# - public/css/app/css
+# - public/js/app.js
 
 
