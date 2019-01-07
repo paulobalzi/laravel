@@ -2,13 +2,23 @@
 
 @section('titulo', 'filho')
 
-{{-- aqui chamamdos o nome definido no registro do componente --}}
-@alerta(['className' => 'alert-danger'])
+@component('components.teste_component', ['className' => 'alert-danger'])
+    {{--
+        necessário definir o atributo {{$slot}} dentro do componente
+        sem ele, esse conteúdo não irá aparecer
+    --}}
     <strong>Conteudo do componente</strong>
     @slot('titulo')
         erro fatal
     @endslot
-@endalerta
+@endcomponent
+
+@component('components.teste_component', ['className' => 'alert-danger'])
+    <strong>Conteudo do componente</strong>
+    @slot('titulo')
+        erro fatal
+    @endslot
+@endcomponent
 
 @section('conteudo')
     <p>
