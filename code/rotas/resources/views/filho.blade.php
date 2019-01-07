@@ -1,18 +1,27 @@
 @extends('layout.app')
 
-{{-- definindo um valor de variável --}}
 @section('titulo', 'filho')
 
-{{-- essa seção irá substituir a secao "barralateral" definido no pai--}}
-@section('barralateral')
-    {{-- faz com que o valor definido no pai também apareca aqui --}}
-    @parent
-    <p>barra lateral do FILHO</p>
-@endsection
+@component('components.teste_component', ['className' => 'alert-danger'])
+    {{--
+        necessário definir o atributo {{$slot}} dentro do componente
+        sem ele, esse conteúdo não irá aparecer
+    --}}
+    <strong>Conteudo do componente</strong>
+    @slot('titulo')
+        erro fatal
+    @endslot
+@endcomponent
 
-{{-- criando uma seção - conteudo --}}
+@component('components.teste_component', ['className' => 'alert-danger'])
+    <strong>Conteudo do componente</strong>
+    @slot('titulo')
+        erro fatal
+    @endslot
+@endcomponent
+
 @section('conteudo')
-    <div class="alert alert-primary" role="alert">
-        A simple primary alert—check it out!
-    </div>
+    <p>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </p>
 @endsection
