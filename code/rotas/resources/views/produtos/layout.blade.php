@@ -8,8 +8,8 @@
 <body>
     <div class="container-fluid">
         <div class="row bg-color-purple">
-            <div class="col-sm-12">
-                <p class="text-white align-middle">Paulo Henrique Balzi Gonçalves</p>
+            <div class="col-sm-12 text-center font-weight-bold">
+                <span class="text-white">made by paulo balzi</span>
             </div>
         </div>
     </div>
