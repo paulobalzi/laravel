@@ -55,6 +55,31 @@ Inicialização do aplicação
 ```
 # Rotas
 
+# Views (blade)
+```
+@extends('path.to.file')
+Inserido no arquivo filho
+```
+```
+@yield
+```
+```
+@section('name_of_section) ... @endsection
+```
+```
+@switch($opcao)
+    @case(1):
+        //code; break
+    @case(2):
+        //code; break
+    @default:
+        //default action
+@endswitch
+```
+```
+@foreach
+$loop->first | #loop->last | $loop->index | $loop->count | $loop->remaining
+```
 # Tips
 * tree -d -L 5 -I "vendor|tests"
 * composer create-project --prefer-dist laravel/laravel <nome-projeto>
