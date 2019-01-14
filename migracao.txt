@@ -1,0 +1,139 @@
+> mysql -u root -p
+
+mysql> create database vendas;
+mysql> quit
+--------------------------------------------------------------------------------
+> cd path/to/project
+
+Arquivo .env
+
+// configurações do banco de dados
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+
+--------------------------------------------------------------------------------
+
+database/migrations
+> cd path/to/project
+> php artisan make:migration <nome_da_migration>
+... gera um arquivo na pasta database/migrations
+... xxxx_xx_xx_xxxxx_nome_da_migration.php, onde xxxx_xx_xx_xxxxx é referente ao
+timestamp da criação da migration. Isso é usado para o laravel saber a ordem de
+aplicação das migrações
+
+Arquivo: migration file
+duas funções:
+public function up() {
+    // executado na ordem crescente. Seguindo a cronologia da criação da base de
+    // dados
+    // Exemplo: Se aqui eu criei uma tabela
+}
+public function down() {
+    // executado na ordem decrescente. Quando é necessário desfazer alguma coisa.
+    // Exemplo: Aqui eu vou excluir a tabela criada
+}
+
+Exemplos:
+- Criando uma migration responsável em criar a tabela "produtos"
+> php artisan make:migration criar_tabela_produtos --create=produtos
+nota-se que foi criado na função "up" o código para a criação da tabela e na
+função "down" o código para exclusão da tabela
+--------------------------------------------------------------------------------
+>>> Atualizando a migration
+public function up()
+{
+    schema::create('produtos', function(Blueprint $table) {
+        // primary key auto increment
+        $table->increments('id');
+        //
+        $table->string('nome');
+        $table->float('preco');
+        $table->integer('estoque');
+        $table->timestamp();
+    })
+}
+
+Na linha de comando, rodar o comando para executar a migration
+> php artisan migrate
+
+Desfazendo a última migration
+> php artisan rollback
+--------------------------------------------------------------------------------
+
+>>> Observação
+> php artisan make:migration criar_tabela_produtos --create=categorias
+OBS: o nome da tabela tem que estar no "plural" (convenção)
+--------------------------------------------------------------------------------
+
+>>> Adicionando campos
+> php artisan make:migration adicionar_categoria_id_produto --table=categorias
+migration para adicionar um campo numa tabela já criada (categorias)
+
+public function up() {
+    // nessa caso, como não é uma criação de tabela, o método utilizado
+    // é o "table" e não o "create"
+    Schema::table('produtos', function(Blueprint $table) {
+        $table->integer('categoria_id')->unsigned();
+        // criando a referencia estrangeira (fk)
+        $table->foreign('categoria_id')->references('id')->on('categorias');
+    });
+}
+
+// criando a reversão da migration
+// seguir a ordem inversa da utilizada no "up"
+public function down() {
+    Schema::table('produtos', function(Blueprint $table) {
+        $table->dropForeign(['categoria_id']);
+        $table->dropColumn(['categoria_id']);
+    });
+}
+--------------------------------------------------------------------------------
+
+>>> Outros comandos
+O rollback vai desfazendo sempre o ultimo comando "migrate" executado.
+Se o comando executou 5 migrations, então o rollback irá desfazer essas cinco. Se
+executou um, desfaz um e assim por diante
+
+> php artisan migrate:fresh
+Limpa toda a base de dados e começa do zero. Recriando todas as migrations
+
+> php artisan migrate:reset
+Começa a base do zero
+
+> php artisan migrate:status
+Mostra o "status" de cada uma das migrations
+--------------------------------------------------------------------------------
+
+>>> Seed
+Preencher a base com registros padrão. Tipo cidade e estado, dados de teste e etc.
+
+> php artisan make:seeder <nome-do-seeder>
+cria os "seeders" na pasta database/seeders
+
+// no arquivo seeder criado
+public function run()
+{
+    // DB = classe do laravel para manutenção da base de dados (CRUD)
+    DB::table('categorias')->insert(
+        ['nome' => 'roupas'],
+        ['nome' => 'eletronicos'],
+        ['nome' => 'perfumes']
+    );
+}
+
+Depois de criado, ir no arquivo "database/seeds/DatabaseSeeder.php" e adicionar
+a chamado ao seeder criado
+public function run()
+{
+    // onde CategoriaSeeder é o no mome da seeder criado pelo comando
+    // php artisan make:seeder <nome-do-seeder>
+    $this->call(CategoriaSeeder::class);
+}
+
+Para executar todos os seeds criados
+> php artisan db:seed
+
