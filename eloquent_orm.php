@@ -49,5 +49,43 @@ $cat = Categoria::whereIn('id', [1,2,3])->get();
 $cat = Categoria::where('id', '>=', 10)->max('id');
 $cat = Categoria::where('id', '>=', 10)->count();
 ----------------------------------------------------------------------------------------------------
+>>> SOFT DELETES
+Na migration necessário adicionar o atributo
+$table->softDeleltes()
+isso irá criar o campo "deleted_at" na tabela, que irá conter o timestamp da deleção
 
+Na model necessário informar que irá usar o softDeletes
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\softDeletes;
+
+class Categoria extends Model
+{
+    use softDeletes;
+    protected $dates = ['deleted_at'];
+
+}
+
+Para acessar a ação de remoção é a mesma da utilização do delete físico
+Exemplo:
+Route::get('/remover/(id)', function() {
+    $cat = Categoria::find($id);
+    $cat->delete();
+})
+
+Na pesquisa, Categoria::All(), esses registros não irá ser recuperados
+Para recuperar tudo, inclusive as excluidas (soft), utilizar o métod:
+$categorias = Categoria::withTrashed()->get();
+o objeto terá o atributo "trashed" que, se true, ele foi apagado, senão, não.
+
+Somente apagadas
+$categorias = Categoria::onlyTrashed()->get();
+
+Para restaurar (restore)
+$categoria = Categoria::withTrashed()->find($id)
+$categoria->restore()
+
+----------------------------------------------------------------------------------------------------
+>>> deleção Permanente
+$categoria = Categoria::withTrashed()->find($id)
+$categoria->forceDelete();
