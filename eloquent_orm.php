@@ -89,3 +89,44 @@ $categoria->restore()
 >>> deleção Permanente
 $categoria = Categoria::withTrashed()->find($id)
 $categoria->forceDelete();
+----------------------------------------------------------------------------------------------------
+>>> salvando registro
+public function create() {
+    // show view
+}
+public function store(Request $requets) {
+    // script para salvar
+    $cat = new Categoria();
+    // mesmo nome definido no formulário
+    $cat->nome = $request->input('nomeCategoria');
+    $cat->save();
+    return redirect('/categorias');
+}
+
+>> CRIANDO a validação CSRF
+no formulário, inserir a chamada "@csrf"
+----------------------------------------------------------------------------------------------------
+>>> deletando registros
+public function destroy($id) {
+    $cat = Categoria:;find($id);
+    id (isset($cat)) {
+        $cat->delete();
+    }
+    return redirect('/categorias');
+}
+----------------------------------------------------------------------------------------------------
+>>> ALTERANDO REGISTROS
+>> View
+// na rota passar o ID do registro que será editado
+<form action="/categorias/{{$cat->id}}" method="post">
+</form>
+
+>> Controller
+public function update(Request $request, $id) {
+    $cat = Categoria::find($id);
+    if (isset($cat)) {
+        $cat->save();
+        $cat->nome = $request->input('nomeCategoria');
+    }
+    return redirect('/categorias');
+}
