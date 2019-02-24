@@ -73,3 +73,33 @@ class Produto extends Model
         return $this->belongsTo('App\Categoria');
     }
 }
+
+// belongsTo
+// recuperando o relacionamento
+
+use Illuminate\Database\Eloquent\Model;
+class Produto extends Model
+{
+    function categoria()
+    {
+        return $this->belongsTo('App\Categoria');
+    }
+}
+
+// hasMany
+use Illuminate\Database\Eloquent\Model;
+class Categoria extends Model
+{
+    function Produtos()
+    {
+        return $this->hasMany('App\Produto');
+    }
+}
+
+// associações
+$cat = Categoriga::find(1);
+$prod = new Produto();
+$prod->nome = 'Meu Produto';
+$prod->estpque = 10;
+$prod->categoria()->associate($cat);
+$prod->save();
